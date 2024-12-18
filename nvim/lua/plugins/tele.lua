@@ -49,7 +49,7 @@ vim.keymap.set('n', '<leader>sm', ":Telescope harpoon marks<CR>", { desc = 'Harp
 vim.keymap.set("n", "<leader>sr", "<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>", silent)
 vim.keymap.set("n", "<leader>sR", "<CMD>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>", silent)
 vim.keymap.set("n", "<leader>sn", "<CMD>lua require('telescope').extensions.notify.notify()<CR>", silent)
-vim.keymap.set("n", "<leader>s.", ":Telescope find_files cwd=~/.config/nvim/<CR>", silent)
+vim.keymap.set("n", "<leader>s.", ":Telescope find_files cwd=~/.config/<CR>", silent)
 -- vim.keymap.set("n", "<Leader>sb", ":Telescope git_branches <CR>", silent)
 
 
