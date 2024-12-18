@@ -1,0 +1,73 @@
+# -- Changing Window Focus --
+
+# change window focus within space
+cmd + shift - j : yabai -m window --focus south
+cmd + shift - k : yabai -m window --focus north
+cmd + shift - h : yabai -m window --focus west
+cmd + shift - l : yabai -m window --focus east
+
+#change focus between external displays (left and right)
+# alt - s: yabai -m display --focus west
+# alt - g: yabai -m display --focus east
+
+# -- Modifying the Layout --
+
+# rotate layout clockwise
+cmd + shift - space : yabai -m space --rotate 270
+
+# flip along y-axis
+cmd + shift - y : yabai -m space --mirror y-axis
+
+# flip along x-axis
+# cmd + shift - x : yabai -m space --mirror x-axis
+
+# toggle window float
+cmd + shift - f : yabai -m window --toggle float --grid 4:4:1:1:2:2
+
+
+# -- Modifying Window Size --
+
+# maximize a window
+cmd + shift - z : yabai -m window --toggle zoom-fullscreen
+
+# balance out tree of windows (resize to occupy same area)
+cmd + shift - e : yabai -m space --balance
+
+# -- Moving Windows Around --
+
+# swap windows
+# cmd + shift - j : yabai -m window --swap south
+# cmd + shift - k : yabai -m window --swap north
+# cmd + shift - h : yabai -m window --swap west
+# cmd + shift - l : yabai -m window --swap east
+
+# move window and split
+# cmd + shift - j : yabai -m window --warp south
+# cmd + shift - k : yabai -m window --warp north
+# cmd + shift - h : yabai -m window --warp west
+# cmd + shift - l : yabai -m window --warp east
+
+# move window to display left and right
+cmd + shift - s : yabai -m window --display west; yabai -m display --focus west;
+cmd + shift - g : yabai -m window --display east; yabai -m display --focus east;
+
+
+# move window to prev and next space
+cmd + shift - p : yabai -m window --space prev;
+cmd + shift - n : yabai -m window --space next;
+
+# move window to space #
+cmd + shift - 1 : yabai -m window --space 1;
+cmd + shift - 2 : yabai -m window --space 2;
+cmd + shift - 3 : yabai -m window --space 3;
+cmd + shift - 4 : yabai -m window --space 4;
+cmd + shift - 5 : yabai -m window --space 5;
+cmd + shift - 6 : yabai -m window --space 6;
+cmd + shift - 7 : yabai -m window --space 7;
+
+# -- Starting/Stopping/Restarting Yabai --
+
+# stop/start/restart yabai
+cmd + shift - q : yabai --stop-service
+cmd + shift - s : yabai --start-service
+cmd + shift - r : yabai --restart-service
