@@ -49,7 +49,17 @@ vim.keymap.set('n', '<leader>sm', ":Telescope harpoon marks<CR>", { desc = 'Harp
 vim.keymap.set("n", "<leader>sr", "<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>", silent)
 vim.keymap.set("n", "<leader>sR", "<CMD>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>", silent)
 vim.keymap.set("n", "<leader>sn", "<CMD>lua require('telescope').extensions.notify.notify()<CR>", silent)
-vim.keymap.set("n", "<leader>s.", ":Telescope find_files cwd=~/.config/<CR>", silent)
+
+-- Function to search on the dotfiles directory defined by the environment variable DOTFILES_PATH
+vim.keymap.set("n", "<leader>s.", function()
+  local cwd = vim.env.DOTFILES_PATH
+  if not cwd or cwd == "" then
+    vim.api.nvim_err_writeln("Environment variable 'DOTFILES_PATH' is not set or is empty")
+    return
+  end
+  require("telescope.builtin").find_files({ cwd = cwd })
+end, { silent = true })
+
 -- vim.keymap.set("n", "<Leader>sb", ":Telescope git_branches <CR>", silent)
 
 
