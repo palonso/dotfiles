@@ -38,7 +38,7 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 require("catppuccin").setup({
-    flavour = "mocha",
+    flavour = "macchiato",
     integrations = {
         gitsigns = true,
         nvimtree = true,
