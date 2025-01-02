@@ -42,3 +42,10 @@ vim.keymap.set('n',        '<leader>f', '<Plug>(leap)')
 vim.keymap.set('n',        '<leader>F', '<Plug>(leap-from-window)')
 vim.keymap.set({'x', 'o'}, '<leader>f', '<Plug>(leap-forward)')
 vim.keymap.set({'x', 'o'}, '<leader>F', '<Plug>(leap-backward)')
+
+
+-- keymaps for Obsidian
+vim.keymap.set('n', '<leader>ot', ':ObsidianToday<CR>')
+vim.keymap.set('n', '<leader>oy', ':ObsidianYesterday<CR>')
+vim.keymap.set('n', '<leader>od', ':ObsidianDailies<CR>')
+vim.keymap.set('n', '<leader>so', ':ObsidianSearch<CR>')
