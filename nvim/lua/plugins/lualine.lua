@@ -72,7 +72,19 @@ require('lualine').setup {
             return colors.inactive  -- Blue when leap is inactive
           end
         end
-      }
+      },
+      {
+        'macro',
+        fmt = function()
+          local reg = vim.fn.reg_recording()
+          if reg ~= '' then
+            return 'Recording @' .. reg
+          end
+          return nil
+        end,
+        color = { fg = '#24273a', bg = '#ed8796' },
+        draw_empty = false,
+      },
     },
   },
 }
