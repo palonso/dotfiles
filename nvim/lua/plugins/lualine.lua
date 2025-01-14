@@ -30,8 +30,8 @@ end
 
 -- Color definitions for lualine
 local colors = {
-  active = { fg = '#ffffff', bg = '#ff5f87' },  -- When leap is active (white text, pink background)
-  inactive = { fg = '#ffffff', bg = '#5f87ff' }, -- When leap is inactive (white text, blue background)
+  active = { fg = '#24273a', bg = '#ed8796' },  -- When leap is active (white text, pink background)luali
+  inactive = { fg = '#24273a', bg = '#ed8796' }, -- When leap is inactive (white text, blue background)
 }
 
 require('lualine').setup {
