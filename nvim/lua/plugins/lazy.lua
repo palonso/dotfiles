@@ -52,6 +52,16 @@ require('lazy').setup({
     }
   },
 
+  -- LSP Diagnostics
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function()
+        require('tiny-inline-diagnostic').setup()
+    end
+  },
+
   -- colors
   { "catppuccin/nvim", as = "catppuccin" },
 
@@ -112,7 +122,8 @@ require('lazy').setup({
       },
     },
   },
-  --copilot
+
+  -- Copilot
   {
     'github/copilot.vim',
   },
@@ -138,6 +149,7 @@ require('lazy').setup({
       "micangl/cmp-vimtex",
     },
   },
+
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
@@ -145,18 +157,15 @@ require('lazy').setup({
       require("ibl").setup()
     end,
   },
+
+   -- 2-char search
   {
     "ggandor/leap.nvim",
     lazy = false,
   },
-  {
-    "rachartier/tiny-inline-diagnostic.nvim",
-    event = "VeryLazy", -- Or `LspAttach`
-    priority = 1000, -- needs to be loaded in first
-    config = function()
-        require('tiny-inline-diagnostic').setup()
-    end
-  },
+
+
+  -- Substitute command
   {
     "gbprod/substitute.nvim",
     opts = {},
@@ -174,6 +183,9 @@ require('lazy').setup({
       vim.keymap.set("n", "<space>rr", require('substitute.range').word, { noremap = true })
     end,
   },
+
+
+  -- Markdown rendering
   {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
@@ -189,23 +201,15 @@ require('lazy').setup({
       })
     end
   },
+
+  -- Obsidian support
   {
     "epwalsh/obsidian.nvim",
     version = "*",  -- recommended, use latest release instead of latest commit
     lazy = false,
     ft = "markdown",
-    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-    -- event = {
-      --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-      --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-      --   -- refer to `:h file-pattern` for more examples
-      --   "BufReadPre path/to/my-vault/*.md",
-      --   "BufNewFile path/to/my-vault/*.md",
-      -- },
     dependencies = {
-      -- Required.
       "nvim-lua/plenary.nvim",
-
     },
     opts = {
       workspaces = {
