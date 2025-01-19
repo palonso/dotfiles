@@ -127,17 +127,17 @@ require('lazy').setup({
   {
     'github/copilot.vim',
   },
-  -- vimtext
-  {
-    "lervag/vimtex",
-    lazy = false,     -- we don't want to lazy load VimTeX
-    -- tag = "v2.15", -- uncomment to pin to a specific release
-    init = function()
-    -- VimTeX configuration goes here
-      vim.g.vimtex_view_method = 'skim'
-    end
-  },
-  -- completion
+
+  -- Support for Latex
+  -- {
+  --   "lervag/vimtex",
+  --   lazy = false,     -- we don't want to lazy load VimTeX
+  --   init = function()
+  --     vim.g.vimtex_view_method = 'skim'
+  --   end
+  -- },
+
+  -- Autocompletion support
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
