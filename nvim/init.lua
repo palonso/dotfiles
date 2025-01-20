@@ -10,7 +10,7 @@ require('plugins.gitsigns')
 require('plugins.tele')
 require('plugins.lsp')
 require('plugins.nvimtree')
-require('plugins.comp')
+require('plugins.cmp')
 
 
 require("notify").setup({ 
