@@ -86,6 +86,7 @@ require('lualine').setup {
         draw_empty = false,
       },
     },
+    lualine_z = {'progress', 'location'},
   },
 }
 
