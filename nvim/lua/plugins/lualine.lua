@@ -85,8 +85,9 @@ require('lualine').setup {
         color = { fg = '#24273a', bg = '#ed8796' },
         draw_empty = false,
       },
+      {'progress'},
     },
-    lualine_z = {'progress', 'location'},
+    lualine_z = {'location'},
   },
 }
 
