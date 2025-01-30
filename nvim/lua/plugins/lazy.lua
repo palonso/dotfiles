@@ -91,17 +91,6 @@ require('lazy').setup({
   -- Navigation
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
   'nvim-telescope/telescope-symbols.nvim',
-  'ThePrimeagen/harpoon',
-  {
-    'xiyaowong/nvim-transparent',
-    config = function()
-      require('transparent').setup({
-        extra_groups = {
-          "NvimTreeNormal" -- NvimTree
-        },
-      })
-    end,
-  },
   {
     "nvim-tree/nvim-tree.lua",
     version = "*",
