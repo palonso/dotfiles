@@ -206,6 +206,7 @@ require('lazy').setup({
     enabled = function() return vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH") ~= vim.NIL end,
     ft = "markdown",
     opts = {
+      ui = { enable = false },  -- Use markdown-render instead.
       workspaces = {
         {
           name = "Notes",
