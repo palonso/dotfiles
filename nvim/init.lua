@@ -1,17 +1,15 @@
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.opt.termguicolors = true
-
 require('options')
+
 require('plugins.lazy')
 require('plugins.mini')
 require('plugins.lualine')
-require('keymaps')
 require('plugins.gitsigns')
 require('plugins.tele')
 require('plugins.nvimtree')
 require('plugins.lsp')
 require('plugins.cmp')
+
+require('keymaps')
 
 require("notify").setup({ 
   background_colour = "#ff9e64", 
