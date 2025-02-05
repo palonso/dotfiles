@@ -43,8 +43,8 @@ vim.wo.signcolumn = 'yes'
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- Concealer for Neorg
-vim.o.conceallevel=2
+-- Concealer for Obsidian
+vim.o.conceallevel = 2
 
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
