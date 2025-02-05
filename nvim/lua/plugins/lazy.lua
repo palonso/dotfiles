@@ -199,7 +199,8 @@ require('lazy').setup({
   -- Obsidian support
   {
     "epwalsh/obsidian.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    -- Add telescope and treessiter
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter", "nvim-telescope/telescope.nvim" },
     version = "*",  -- recommended, use latest release instead of latest commit
     lazy = false,
     ft = "markdown",
@@ -210,6 +211,10 @@ require('lazy').setup({
           path = "~/syncthing/notes/Notes/",
         },
       },
+      -- Optional, if you keep notes in a specific subdirectory of your vault.
+      notes_subdir = "0_inbox",
+      new_notes_location = "notes_subdir",
+      -- Daily notes configuration.
       daily_notes = {
         -- Optional, if you keep daily notes in a separate directory.
         folder = "daily_notes",
