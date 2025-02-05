@@ -17,6 +17,11 @@ vim.o.termguicolors = true
 
 require('lazy').setup({
 
+  -- mini.nvim suite
+  {
+    'echasnovski/mini.nvim', version = false,
+  },
+
   -- Fancier statusline
   {'nvim-lualine/lualine.nvim'},
 
