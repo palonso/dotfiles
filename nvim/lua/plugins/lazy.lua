@@ -71,16 +71,19 @@ require('lazy').setup({
   -- colors
   {
     "catppuccin/nvim", as = "catppuccin",
+    priority = 1000,
     config = function()
       require("catppuccin").setup({
-        flavour = "macchiato",
+        flavour = "mocha",
         integrations = {
           gitsigns = true,
-          nvimtree = true,
-          treesitter = true,
+          leap = true,
+          mason = true,
+          noice = true,
           notify = true,
         },
       })
+
       vim.cmd.colorscheme "catppuccin"
     end
   },

@@ -144,4 +144,13 @@ require("lspconfig").ltex.setup {
 --   },
 -- })
 
+vim.defer_fn(function()
+  local palette = require("catppuccin.palettes").get_palette() -- Get active palette
+  local lighter_bg = palette.surface0 -- A lighter background from the palette
+
+  -- Apply the new background color to NormalFloat
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = lighter_bg })
+
+end, 50) -- Small delay to ensure colorscheme is loaded
+
 -- vim: ts=2 sts=2 sw=2 et

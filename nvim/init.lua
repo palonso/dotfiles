@@ -12,7 +12,6 @@ require('plugins.cmp')
 require('keymaps')
 
 require("notify").setup({ 
-  background_colour = "#ff9e64", 
   render = "compact",
   stages = "static",
 })
