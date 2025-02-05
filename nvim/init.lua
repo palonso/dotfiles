@@ -4,6 +4,7 @@ vim.opt.termguicolors = true
 
 require('options')
 require('plugins.lazy')
+require('plugins.mini')
 require('plugins.lualine')
 require('keymaps')
 require('plugins.gitsigns')
