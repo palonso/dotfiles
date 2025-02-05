@@ -203,12 +203,13 @@ require('lazy').setup({
     dependencies = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter", "nvim-telescope/telescope.nvim" },
     version = "*",  -- recommended, use latest release instead of latest commit
     lazy = false,
+    enabled = function() return vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH") ~= vim.NIL end,
     ft = "markdown",
     opts = {
       workspaces = {
         {
           name = "Notes",
-          path = "~/syncthing/notes/Notes/",
+          path = vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH"),
         },
       },
       -- Optional, if you keep notes in a specific subdirectory of your vault.

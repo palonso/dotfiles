@@ -50,12 +50,53 @@ vim.keymap.set({'x', 'o'}, '<leader>F', '<Plug>(leap-backward)')
 
 
 -- keymaps for Obsidian
-vim.keymap.set('n', '<leader>ot', ':ObsidianToday<CR>', {silent=true})
-vim.keymap.set('n', '<leader>oy', ':ObsidianYesterday<CR>', {silent=true})
-vim.keymap.set('n', '<leader>om', ':ObsidianTomorrow<CR>', {silent=true})
-vim.keymap.set('n', '<leader>od', ':ObsidianDailies<CR>', {silent=true})
-vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', {silent=true})
-vim.keymap.set('n', '<leader>so', ':ObsidianSearch<CR>', {silent=true})
+local function check_obsidian_workspace()
+  local obsidian_workspace_path = vim.env.OBSIDIAN_WORKSPACE_PATH
+  if not obsidian_workspace_path or obsidian_workspace_path == "" then
+    vim.api.nvim_err_writeln(
+      "Environment variable 'OBSIDIAN_WORKSPACE_PATH' is not set or is empty. " ..
+      "Set it to a valid Vault path to enable Obsidian support."
+    )
+    return false
+  end
+  return true
+end
+
+vim.keymap.set('n', '<leader>ot', function()
+  if check_obsidian_workspace() then
+    vim.cmd('ObsidianToday')
+  end
+end, {silent=true})
+
+vim.keymap.set('n', '<leader>oy', function()
+  if check_obsidian_workspace() then
+    vim.cmd('ObsidianYesterday')
+  end
+end, {silent=true})
+
+vim.keymap.set('n', '<leader>om', function()
+  if check_obsidian_workspace() then
+    vim.cmd('ObsidianTomorrow')
+  end
+end, {silent=true})
+
+vim.keymap.set('n', '<leader>od', function()
+  if check_obsidian_workspace() then
+    vim.cmd('ObsidianDailies')
+  end
+end, {silent=true})
+
+vim.keymap.set('n', '<leader>on', function()
+  if check_obsidian_workspace() then
+    vim.cmd('ObsidianNew')
+  end
+end, {silent=true})
+
+vim.keymap.set('n', '<leader>so', function()
+  if check_obsidian_workspace() then
+    vim.cmd('ObsidianSearch')
+  end
+end, {silent=true})
 
 -- keymaps for substitute
 vim.keymap.set("n", "s", require('substitute').operator, { noremap = true })
