@@ -32,7 +32,8 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
--- Decrease update time
+-- Decrease update time for aster updates for LSP diagnostics, Git signs, or auto-saving plugins.
+-- Improves responsiveness for popups and UI updates.
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
 
