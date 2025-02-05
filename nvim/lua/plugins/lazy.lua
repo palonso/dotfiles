@@ -106,6 +106,7 @@ require('lazy').setup({
   -- Navigation
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
   'nvim-telescope/telescope-symbols.nvim',
+
   {
    "nvim-tree/nvim-tree.lua",
    version = "*",
@@ -156,7 +157,7 @@ require('lazy').setup({
 
   {
    "lukas-reineke/indent-blankline.nvim",
-   main = "ibl",
+     dependencies = { "nvim-lua/plenary.nvim" },
    config = function()
      require("ibl").setup()
    end,
@@ -168,7 +169,6 @@ require('lazy').setup({
    lazy = false,
   },
 
-
   -- Substitute command
   {
     "gbprod/substitute.nvim",
@@ -177,14 +177,10 @@ require('lazy').setup({
     end,
   },
 
-
   -- Markdown rendering
   {
    'MeanderingProgrammer/render-markdown.nvim',
-   dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-   ---@module 'render-markdown'
-   ---@type render.md.UserConfig
-   opts = {},
+   dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
    config = function()
      require('render-markdown').setup({
        heading = {
@@ -197,40 +193,38 @@ require('lazy').setup({
 
   -- Obsidian support
   {
-   "epwalsh/obsidian.nvim",
-   version = "*",  -- recommended, use latest release instead of latest commit
-   lazy = false,
-   ft = "markdown",
-   dependencies = {
-     "nvim-lua/plenary.nvim",
-   },
-   opts = {
-     workspaces = {
-       {
-         name = "Notes",
-         path = "~/syncthing/notes/Notes/",
-       },
-     },
-     daily_notes = {
-       -- Optional, if you keep daily notes in a separate directory.
-       folder = "daily_notes",
-       -- Optional, if you want to change the date format for the ID of daily notes.
-       date_format = "%Y-%m-%d",
-       -- Optional, if you want to change the date format of the default alias of daily notes.
-       alias_format = "%B %-d, %Y",
-       -- Optional, default tags to add to each new daily note created.
-       default_tags = { "daily-notes" },
-       -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-       template = nil
-     },
-       -- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
-     completion = {
-       -- Set to false to disable completion.
-       nvim_cmp = true,
-       -- Trigger completion at 2 chars.
-       min_chars = 2,
-     },
-   },
+    "epwalsh/obsidian.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    version = "*",  -- recommended, use latest release instead of latest commit
+    lazy = false,
+    ft = "markdown",
+    opts = {
+      workspaces = {
+        {
+          name = "Notes",
+          path = "~/syncthing/notes/Notes/",
+        },
+      },
+      daily_notes = {
+        -- Optional, if you keep daily notes in a separate directory.
+        folder = "daily_notes",
+        -- Optional, if you want to change the date format for the ID of daily notes.
+        date_format = "%Y-%m-%d",
+        -- Optional, if you want to change the date format of the default alias of daily notes.
+        alias_format = "%B %-d, %Y",
+        -- Optional, default tags to add to each new daily note created.
+        default_tags = { "daily-notes" },
+        -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
+        template = nil
+      },
+        -- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
+      completion = {
+        -- Set to false to disable completion.
+        nvim_cmp = true,
+        -- Trigger completion at 2 chars.
+        min_chars = 2,
+      },
+    },
   },
 
   -- Better syntax highlighting
