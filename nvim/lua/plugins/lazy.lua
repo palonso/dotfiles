@@ -206,7 +206,14 @@ require('lazy').setup({
     enabled = function() return vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH") ~= vim.NIL end,
     ft = "markdown",
     opts = {
-      ui = { enable = false },  -- Use markdown-render instead.
+      ui = { 
+        enable = false,
+        -- Replace the defaults by just the TODO and DONE checkboxes.
+        checkboxes = {
+          [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
+          ["x"] = { char = "", hl_group = "ObsidianDone" }
+        },
+      },  -- Use markdown-render instead.
       workspaces = {
         {
           name = "Notes",
