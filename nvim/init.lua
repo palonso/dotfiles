@@ -2,16 +2,15 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
+require('options')
 require('plugins.lazy')
 require('plugins.lualine')
-require('options')
 require('keymaps')
 require('plugins.gitsigns')
 require('plugins.tele')
-require('plugins.lsp')
 require('plugins.nvimtree')
+require('plugins.lsp')
 require('plugins.cmp')
-
 
 require("notify").setup({ 
   background_colour = "#ff9e64", 
@@ -20,4 +19,4 @@ require("notify").setup({
 })
 
 
--- vim: ts=8 sts=4 sw=4 et
+-- vim: ts=2 sw=2 et

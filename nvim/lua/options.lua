@@ -12,7 +12,6 @@ vim.o.hlsearch = true
 vim.wo.number = true
 vim.o.relativenumber = true
 
-
 vim.opt.cursorline = true
 
 -- Disable mouse mode
@@ -25,6 +24,7 @@ vim.o.tabstop = 4 -- A TAB character looks like 4 spaces
 vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
 vim.o.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
 vim.o.shiftwidth = 4 -- Number of spaces inserted when indenting
+
 -- Save undo history
 vim.o.undofile = true
 
@@ -35,19 +35,6 @@ vim.o.smartcase = true
 -- Decrease update time
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
-
--- Set colorscheme
-require("catppuccin").setup({
-  flavour = "macchiato",
-  integrations = {
-    gitsigns = true,
-    nvimtree = true,
-    treesitter = true,
-    notify = true,
-  },
-})
-
-vim.cmd.colorscheme "catppuccin"
 
 --vim.cmd()
 -- vim.opt.clipboard = 'unnamed,unnamedplus'
@@ -70,5 +57,6 @@ vim.lsp.set_log_level("off")
 
 -- tiny-inline-diagnostics settings, to not have all diagnostics in the buffer displayed
 vim.diagnostic.config({ virtual_text = false })
+
 
 -- vim: ts=2 sts=2 sw=2 et

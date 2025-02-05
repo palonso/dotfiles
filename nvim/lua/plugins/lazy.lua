@@ -63,7 +63,21 @@ require('lazy').setup({
   },
 
   -- colors
-  { "catppuccin/nvim", as = "catppuccin" },
+  {
+    "catppuccin/nvim", as = "catppuccin",
+    config = function()
+      require("catppuccin").setup({
+        flavour = "macchiato",
+        integrations = {
+          gitsigns = true,
+          nvimtree = true,
+          treesitter = true,
+          notify = true,
+        },
+      })
+      vim.cmd.colorscheme "catppuccin"
+    end
+  },
 
   -- git stuff
   'tpope/vim-fugitive',
