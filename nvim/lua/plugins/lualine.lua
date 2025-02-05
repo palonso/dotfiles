@@ -39,7 +39,7 @@ require('lualine').setup {
     icons_enabled = true,
     component_separators = '',
     section_separators = '',
-    ignore_focus = {},
+    ignore_focus = { "NvimTree", "qf", "Avante", "AvanteInput" },
     always_divide_middle = true,
     globalstatus = false,
   },
