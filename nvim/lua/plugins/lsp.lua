@@ -107,12 +107,11 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- format on save/update
-require("lsp-format").setup {}
+-- require("lsp-format").setup {}
 
 -- TODO lsp-format stoped working for unknown reasons.
 -- For now rely on autocmd to format python files on save.
 -- https://www.reddit.com/r/neovim/comments/y9qv1w/autoformatting_on_save_with_vimlspbufformat_and/
-
 vim.api.nvim_create_augroup('AutoFormatting', {})
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*.py',
@@ -124,7 +123,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 
 -- language tool grammar checker
 require("lspconfig").ltex.setup {
-  on_attach = require("lsp-format").on_attach,
+  -- on_attach = require("lsp-format").on_attach,
   settings = {
     ltex = {
       checkFrequency = "save",

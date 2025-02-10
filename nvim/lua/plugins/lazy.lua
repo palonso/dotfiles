@@ -106,7 +106,7 @@ require('lazy').setup({
   },
 
   -- Formatting
-  'lukas-reineke/lsp-format.nvim',
+  -- 'lukas-reineke/lsp-format.nvim',
   
   -- Comments
   'tpope/vim-commentary',
