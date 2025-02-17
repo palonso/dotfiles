@@ -1,155 +1,190 @@
--- LSP settings.
---  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
-  -- NOTE: Remember that lua is a real programming language, and as such it is possible
-  -- to define small helper and utility functions so you don't have to repeat yourself
-  -- many times.
-  --
-  -- In this case, we create a function that lets us more easily define mappings specific
-  -- for LSP related items. It sets the mode, buffer and description for us each time.
-  local nmap = function(keys, func, desc)
-    if desc then
-      desc = 'LSP: ' .. desc
-    end
+return {
+  {
+    "neovim/nvim-lspconfig",
+    opts = function()
+      local keys = require("lazyvim.plugins.lsp.keymaps").get()
+      -- change a keymap
+      -- keys[#keys + 1] = { "K", "<cmd>echo 'hello'<cr>" }
+      -- disable a keymap
+      keys[#keys + 1] = { "K", false }
+      -- add a keymap
+      keys[#keys + 1] = {
+        "<leader>i",
+        function()
+          return vim.lsp.buf.hover()
+        end,
+        desc = "Hover",
+      }
+    end,
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function()
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+      local cmp = require("cmp")
+      local defaults = require("cmp.config.default")()
+      local auto_select = true
+      return {
+        auto_brackets = {}, -- configure any filetype to auto add brackets
+        completion = {
+          completeopt = "menu,menuone,noinsert" .. (auto_select and "" or ",noselect"),
+        },
+        preselect = auto_select and cmp.PreselectMode.Item or cmp.PreselectMode.None,
+        mapping = cmp.mapping.preset.insert({
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          -- ["<CR>"] = LazyVim.cmp.confirm({ select = auto_select }),
+          ["<S-CR>"] = LazyVim.cmp.confirm({ select = true }),
+          ["<C-y>"] = LazyVim.cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<C-CR>"] = function(fallback)
+            cmp.abort()
+            fallback()
+          end,
+          ["<C-a>"] = function(fallback)
+            return LazyVim.cmp.map({ "snippet_forward", "ai_accept" }, fallback)()
+          end,
+        }),
+        sources = cmp.config.sources({
+          { name = "lazydev" },
+          { name = "nvim_lsp" },
+          { name = "path" },
+        }, {
+          { name = "buffer" },
+        }),
+        formatting = {
+          format = function(entry, item)
+            local icons = LazyVim.config.icons.kinds
+            if icons[item.kind] then
+              item.kind = icons[item.kind] .. item.kind
+            end
 
-    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-  end
+            local widths = {
+              abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
+              menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
+            }
 
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  -- nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-  -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+            for key, width in pairs(widths) do
+              if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
+                item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
+              end
+            end
 
-  -- See `:help K` for why this keymap
-  nmap('<leader>i', vim.lsp.buf.hover, 'Hover Documentation')
-
-  -- Lesser used LSP functionality
-  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, '[W]orkspace [L]ist Folders')
-
-  -- -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    if vim.lsp.buf.format then
-      vim.lsp.buf.format()
-    elseif vim.lsp.buf.formatting then
-      vim.lsp.buf.formatting()
-    end
-  end, { desc = 'Format current buffer with LSP' })
-end
-
--- Setup mason so it can manage external tooling
-require('mason').setup()
-
--- Enable the following language servers
--- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'bashls', 'ruff', 'pyright', 'ltex' }
-
--- Ensure the servers above are installed
-require('mason-lspconfig').setup {
-  ensure_installed = servers,
-}
-
-for _, lsp in ipairs(servers) do
-  require('lspconfig')[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-end
-
--- Example custom configuration for lua
---
--- Make runtime files discoverable to the server
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/init.lua')
-
-require('lspconfig').luau_lsp.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT)
-        version = 'LuaJIT',
-        -- Setup your lua path
-        path = runtime_path,
-      },
-      diagnostics = {
-      globals = { 'vim' },
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
-        checkThirdParty = false,
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = { enable = false },
-    },
+            return item
+          end,
+        },
+        experimental = {
+          -- only show ghost text when we show ai completions
+          ghost_text = vim.g.ai_cmp and {
+            hl_group = "CmpGhostText",
+          } or false,
+        },
+        sorting = defaults.sorting,
+      }
+    end,
+    main = "lazyvim.util.cmp",
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = function()
+      ---@class PluginLspOpts
+      local ret = {
+        -- options for vim.diagnostic.config()
+        ---@type vim.diagnostic.Opts
+        diagnostics = {
+          underline = true,
+          update_in_insert = false,
+          virtual_text = false,
+        },
+        -- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
+        -- Be aware that you also will need to properly configure your LSP server to
+        -- provide the inlay hints.
+        inlay_hints = {
+          enabled = true,
+          exclude = { "vue" }, -- filetypes for which you don't want to enable inlay hints
+        },
+        -- Enable this to enable the builtin LSP code lenses on Neovim >= 0.10.0
+        -- Be aware that you also will need to properly configure your LSP server to
+        -- provide the code lenses.
+        codelens = {
+          enabled = false,
+        },
+        -- add any global capabilities here
+        capabilities = {
+          workspace = {
+            fileOperations = {
+              didRename = true,
+              willRename = true,
+            },
+          },
+        },
+        -- options for vim.lsp.buf.format
+        -- `bufnr` and `filter` is handled by the LazyVim formatter,
+        -- but can be also overridden when specified
+        format = {
+          formatting_options = nil,
+          timeout_ms = nil,
+        },
+        -- LSP Server Settings
+        ---@type lspconfig.options
+        servers = {
+          lua_ls = {
+            -- mason = false, -- set to false if you don't want this server to be installed with mason
+            -- Use this to add any additional keymaps
+            -- for specific lsp servers
+            -- ---@type LazyKeysSpec[]
+            -- keys = {},
+            settings = {
+              Lua = {
+                workspace = {
+                  checkThirdParty = false,
+                },
+                codeLens = {
+                  enable = true,
+                },
+                completion = {
+                  callSnippet = "Replace",
+                },
+                doc = {
+                  privateName = { "^_" },
+                },
+                hint = {
+                  enable = true,
+                  setType = false,
+                  paramType = true,
+                  paramName = "Disable",
+                  semicolon = "Disable",
+                  arrayIndex = "Disable",
+                },
+              },
+            },
+          },
+        },
+        -- you can do any additional lsp server setup here
+        -- return true if you don't want this server to be setup with lspconfig
+        ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+        setup = {
+          -- example to setup with typescript.nvim
+          -- tsserver = function(_, opts)
+          --   require("typescript").setup({ server = opts })
+          --   return true
+          -- end,
+          -- Specify * to use this function as a fallback for any server
+          -- ["*"] = function(server, opts) end,
+        },
+      }
+      return ret
+    end,
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function()
+      vim.diagnostic.config({ virtual_text = false })
+      require("tiny-inline-diagnostic").setup()
+    end,
   },
 }
-
--- nvim-cmp setup
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'sh',
-  callback = function()
-    vim.lsp.start({
-      name = 'bash-language-server',
-      cmd = { 'bash-language-server', 'start' },
-    })
-  end,
-})
-
--- format on save/update
--- require("lsp-format").setup {}
-
--- TODO lsp-format stoped working for unknown reasons.
--- For now rely on autocmd to format python files on save.
--- https://www.reddit.com/r/neovim/comments/y9qv1w/autoformatting_on_save_with_vimlspbufformat_and/
-vim.api.nvim_create_augroup('AutoFormatting', {})
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*.py',
-  group = 'AutoFormatting',
-  callback = function()
-    vim.lsp.buf.format({ async = false })
-  end,
-})
-
--- language tool grammar checker
-require("lspconfig").ltex.setup {
-  -- on_attach = require("lsp-format").on_attach,
-  settings = {
-    ltex = {
-      checkFrequency = "save",
-      dictionary = {
-        ['en-US'] = { 'Essentia', 'Discogs', 'TODO', 'ISMIR', 'ICASSP'},
-      },
-    }
-  }
-}
-
--- Turn on lsp status information
--- require('fidget').setup({
---   progress = {
---     display = {
---       render_limit = 1,
---     },
---   },
--- })
-
-vim.defer_fn(function()
-  local palette = require("catppuccin.palettes").get_palette() -- Get active palette
-  local lighter_bg = palette.surface0 -- A lighter background from the palette
-
-  -- Apply the new background color to NormalFloat
-  vim.api.nvim_set_hl(0, "NormalFloat", { bg = lighter_bg })
-
-end, 50) -- Small delay to ensure colorscheme is loaded
-
--- vim: ts=2 sts=2 sw=2 et
