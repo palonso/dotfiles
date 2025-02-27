@@ -3,8 +3,8 @@ return {
   opts = {
     heading = {
       width = "block",
-      left_pad = 1,
-      right_pad = 1,
+      left_pad = 0,
+      right_pad = 0,
     },
   },
 }
