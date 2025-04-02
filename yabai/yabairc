@@ -34,6 +34,5 @@ yabai -m rule --add app="^Karabiner-Elements$" manage=off
 yabai -m rule --add app="^QuickTime Player$" manage=off
 yabai -m rule --add app="^Calendar$" manage=off
 yabai -m rule --add app="^Finder$" manage=off
-
-# yabai -m rule --add app="^KeeWeb$" manage=off
+yabai -m rule --add app="^KeeWeb$" manage=off
 yabai -m rule --add app="^Notes$" manage=off
