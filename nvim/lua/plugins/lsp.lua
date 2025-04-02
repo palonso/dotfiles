@@ -55,7 +55,7 @@ return {
           { name = "nvim_lsp" },
           { name = "path" },
         }, {
-          { name = "buffer" },
+          { name = "buffer", keyword_length = 4 },
         }),
         formatting = {
           format = function(entry, item)
