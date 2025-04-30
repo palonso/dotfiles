@@ -11,16 +11,6 @@
                 "rules": [
                     {
                         "description": "Swap CMD and Control keys for letters `qwerasc` CMD (for Linux compatibility)",
-                        "devices": [
-                            {
-                                "identifiers": {
-                                    "is_pointing_device": true,
-                                    "product_id": 50184,
-                                    "vendor_id": 1133
-                                },
-                                "ignore": false
-                            }
-                        ],
                         "manipulators": [
                             {
                                 "conditions": [
