@@ -8,6 +8,9 @@ vim.opt.mouse = ""
 -- Do not provide ai suggestions as completion entries
 vim.g.ai_cmp = false
 
+-- Disable line wrap
+vim.opt.wrap = true
+
 -- Support copying to system's buffer from remote servers (OSC 52) also inside tmux sessions
 -- https://github.com/neovim/neovim/discussions/29350#discussioncomment-10299517
 vim.opt.clipboard = "unnamedplus"
