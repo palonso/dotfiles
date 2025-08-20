@@ -30,7 +30,7 @@ vim.keymap.set("n", "<leader>oy", function()
   if check_obsidian_workspace() then
     vim.cmd("ObsidianYesterday")
   end
-end, { silent = true })
+end, { silent = true, desc = "Open yesterday's note" })
 
 vim.keymap.set("n", "<leader>om", function()
   if check_obsidian_workspace() then
