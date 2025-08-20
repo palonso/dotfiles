@@ -55,3 +55,9 @@ vim.keymap.set("n", "<leader>so", function()
     vim.cmd("ObsidianSearch")
   end
 end, { silent = true, desc = "Search notes" })
+
+vim.keymap.set("n", "<leader>oo", function()
+  if check_obsidian_workspace() then
+    vim.cmd("ObsidianOpen")
+  end
+end, { silent = true, desc = "Open in Obsidian" })
