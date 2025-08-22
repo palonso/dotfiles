@@ -7,12 +7,12 @@ return {
   opts = {
     sources = {
       compat = { "obsidian", "obsidian_new", "obsidian_tags" },
-    },
-    completion = {
-      trigger = {
-        -- how many characters must be typed before completion triggers
-        -- default is usually 1, you want 3
-        chars = 3,
+      providers = {
+        buffer = {
+          module = "blink.cmp.sources.buffer",
+          min_keyword_length = 3, -- require more chars to trigger
+          score_offset = -2, -- lower priority than other sources
+        },
       },
     },
   },
