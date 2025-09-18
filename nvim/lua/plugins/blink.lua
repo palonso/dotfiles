@@ -13,6 +13,11 @@ return {
           min_keyword_length = 3, -- require more chars to trigger
           score_offset = -2, -- lower priority than other sources
         },
+        snippets = {
+          module = "blink.cmp.sources.snippets",
+          min_keyword_length = 3, -- require more chars to trigger
+          score_offset = -2, -- lower priority than other sources
+        },
       },
     },
   },
