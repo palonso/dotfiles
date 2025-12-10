@@ -14,9 +14,10 @@ vim.keymap.set("v", "<leader>ae", ":AvanteEdit<CR>", { desc = "Edit Avante" })
 local function check_obsidian_workspace()
   local obsidian_workspace_path = vim.env.OBSIDIAN_WORKSPACE_PATH
   if not obsidian_workspace_path or obsidian_workspace_path == "" then
-    vim.api.nvim_err_writeln(
-      "Environment variable 'OBSIDIAN_WORKSPACE_PATH' is not set or is empty. "
-        .. "Set it to a valid Vault path to enable Obsidian support."
+    vim.notify(
+      "Environment variable 'OBSIDIAN_WORKSPACE_PATH' is not set or is empty.\n"
+        .. "Set it to a valid Vault path to enable Obsidian support.",
+      vim.log.levels.WARN
     )
     return false
   end
