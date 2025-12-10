@@ -7,6 +7,9 @@ vim.keymap.set("i", "jk", "<Esc>", { noremap = false })
 vim.keymap.set({ "n", "v" }, "J", "5j", { noremap = false })
 vim.keymap.set({ "n", "v" }, "K", "5k", { noremap = false })
 
+-- Run AvanteEdit on visual selection (Assumes avante plugin is installed)
+vim.keymap.set("v", "<leader>ae", ":AvanteEdit<CR>", { desc = "Edit Avante" })
+
 -- keymaps for Obsidian (if the environment variable is set)
 local function check_obsidian_workspace()
   local obsidian_workspace_path = vim.env.OBSIDIAN_WORKSPACE_PATH
