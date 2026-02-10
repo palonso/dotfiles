@@ -20,4 +20,4 @@ sudo apt install stow
 
 1. `git clone git@github.com:palonso/dotfiles.git`
 2. `cd dotfiles`
-3. `stow *`
+3. `stow .`
