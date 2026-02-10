@@ -12,3 +12,6 @@ window-padding-y = 10
 # Optional: cursor & font tweaks
 cursor-style = block
 font-size = 13
+
+# Do not ask for permissions to read from the clipboard
+clipboard-read = allow
