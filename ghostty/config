@@ -1,5 +1,5 @@
 # Other theme options, don't look as good for me
-# theme = Catppuccin Macchiato
+theme = Catppuccin Macchiato
 # theme = TokyoNight Moon
 
 # Background transparency (0.0 = fully transparent, 1.0 = opaque)
@@ -15,3 +15,6 @@ font-size = 13
 
 # Do not ask for permissions to read from the clipboard
 clipboard-read = allow
+
+# Do not show the title bar, since it looks bad with the theme and I don't need it
+window-decoration = false
