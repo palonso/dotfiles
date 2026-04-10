@@ -1,0 +1,66 @@
+#!/bin/bash
+# sync_on_update <local_source> <remote_target> [-b|--bidirectional]
+# Watches the local source directory and syncs it to the remote target when files change.
+set -e
+
+# Parse bidirectional flag
+BIDIRECTIONAL=false
+[[ "$1" == "-b" || "$1" == "--bidirectional" ]] && BIDIRECTIONAL=true && shift
+[[ "$3" == "-b" || "$3" == "--bidirectional" ]] && BIDIRECTIONAL=true
+
+if [ "$#" -ne 2 ]; then
+  echo "Usage: sync_on_update [-b|--bidirectional] <local_source> <remote_target>"
+  exit 1
+fi
+
+LOCAL_SRC="$1"
+REMOTE_TARGET="$2"
+
+# Check for required tools
+command -v entr >/dev/null || {
+  echo "Error: 'entr' is not installed."
+  exit 1
+}
+
+# Exclude patterns
+EXCLUDES="*.pyc __pycache__ .git .DS_Store *.log .mypy_cache .pytest_cache .idea .vscode *.swp venv build"
+
+# Build rsync exclude string and find exclude args
+RSYNC_EXCLUDES=""
+FIND_EXCLUDES=()
+for pat in $EXCLUDES; do
+  RSYNC_EXCLUDES+="--exclude=$pat "
+  if [[ "$pat" == *.* ]]; then
+    FIND_EXCLUDES+=(-not -name "$pat")
+  else
+    FIND_EXCLUDES+=(-not -path "*/$pat/*")
+  fi
+done
+
+sync_files() {
+  rsync -auzhv $RSYNC_EXCLUDES "$LOCAL_SRC" "$REMOTE_TARGET"
+  # Trailing slash on source copies contents, not the folder itself
+  $BIDIRECTIONAL && rsync -auzhv --ignore-existing $RSYNC_EXCLUDES "$REMOTE_TARGET/" "$LOCAL_SRC"
+  return 0
+}
+
+export -f sync_files
+export LOCAL_SRC REMOTE_TARGET BIDIRECTIONAL RSYNC_EXCLUDES
+
+# Watch loop - restarts when new files are added (-d flag)
+while true; do
+  find "$LOCAL_SRC" -type f "${FIND_EXCLUDES[@]}" 2>/dev/null | entr -d bash -c 'sync_files' && exit_code=$? || exit_code=$?
+  # entr exits with 2 when directory changes (new files added)
+  # Sync immediately to catch the new files before rebuilding the watch list
+  if [ $exit_code -eq 0 ]; then
+    # exit
+    echo "Exiting sync_on_update."
+    exit 0
+
+  elif [ $exit_code -eq 2 ]; then
+    sync_files
+  else
+    # sleep to avoid busy loop in case of entr failure
+    sleep 1
+  fi
+done
