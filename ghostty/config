@@ -1,9 +1,10 @@
 # Other theme options, don't look as good for me
-theme = Catppuccin Macchiato
 # theme = TokyoNight Moon
 
+theme = Catppuccin Macchiato
+
 # Background transparency (0.0 = fully transparent, 1.0 = opaque)
-background-opacity = 0.80
+# background-opacity = 0.80
 
 # Optional: nicer spacing
 window-padding-x = 12
