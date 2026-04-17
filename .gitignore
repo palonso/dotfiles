@@ -1,2 +1,5 @@
-karabiner/automatic_backups/
+# ignore karabiner-elements automatic_backups
+automatic_backups/
+
+# ignore tmux plugins
 tmux/plugins/
