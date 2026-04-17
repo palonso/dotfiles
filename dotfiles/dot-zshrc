@@ -1,0 +1,36 @@
+# % ============================ %
+# Fzf configuration
+# % ============================ %
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# % ============================ %
+# Prompt configuration
+# % ============================ %
+eval "$(starship init zsh)"
+
+# % ============================ %
+# Autosuggestions and highlighting
+# % ============================ %
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# % ============================ %
+# Aliases
+# % ============================ %
+alias v=nvim
+alias l="ls -lt --color=always"
+
+alias cnotes="cd $OBSIDIAN_WORKSPACE_PATH"
+alias vnotes="cnotes && nvim"
+
+alias cdot="cd $HOME/reps/dotfiles/"
+alias vdot="cdot && nvim"
+
+alias creps="cd $HOME/reps/"
+
+# % ============================ %
+# Environment variables
+# % ============================ %
+export EDITOR=nvim
+export OBSIDIAN_WORKSPACE_PATH="$HOME/syncthing/notes/Notes/"
+
