@@ -19,6 +19,7 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # % ============================ %
 alias v=nvim
 alias l="ls -lth --color=always"
+alias c="claude"
 
 alias cnotes="cd $OBSIDIAN_WORKSPACE_PATH"
 alias vnotes="cnotes && nvim"
