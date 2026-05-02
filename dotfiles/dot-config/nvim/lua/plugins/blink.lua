@@ -1,3 +1,15 @@
+local function in_obsidian_vault()
+  local vault = vim.env.OBSIDIAN_WORKSPACE_PATH
+  if not vault or vault == "" then
+    return false
+  end
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == "" then
+    return false
+  end
+  return vim.startswith(vim.fs.normalize(path), vim.fs.normalize(vault))
+end
+
 return {
   "saghen/blink.cmp",
   dependencies = {
@@ -18,6 +30,9 @@ return {
           min_keyword_length = 3, -- require more chars to trigger
           score_offset = -2, -- lower priority than other sources
         },
+        obsidian = { enabled = in_obsidian_vault },
+        obsidian_new = { enabled = in_obsidian_vault },
+        obsidian_tags = { enabled = in_obsidian_vault },
       },
     },
   },
