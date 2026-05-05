@@ -10,6 +10,9 @@ vim.keymap.set({ "n", "v" }, "K", "5k", { noremap = false })
 -- Open the current buffer's file with the macOS default app (e.g. Preview for PDFs).
 vim.keymap.set("n", "<leader>fo", "<cmd>!open %<CR>", { silent = true, desc = "Open file in native app" })
 
+-- cd to the directory of the current buffer (window-local).
+vim.keymap.set("n", "<leader>fd", "<cmd>lcd %:p:h<CR>", { silent = true, desc = "cd to buffer dir" })
+
 -- Run AvanteEdit on visual selection. Discarding since we are relying in claude-code extension now.
 -- vim.keymap.set("v", "<leader>ae", ":AvanteEdit<CR>", { desc = "Edit Avante" })
 
