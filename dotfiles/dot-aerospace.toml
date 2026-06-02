@@ -207,8 +207,17 @@ automatically-unhide-macos-hidden-apps = false
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
-run = 'layout h_tiles'
+run = ['layout tiling', 'layout h_tiles']
 
 [[on-window-detected]]
 if.app-id = 'net.kovidgoyal.kitty'
-run = 'layout h_tiles'
+run = ['layout tiling', 'layout h_tiles']
+
+# Firefox: tile
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = ['layout tiling', 'layout h_tiles']
+
+# Default: float everything
+[[on-window-detected]]
+run = 'layout floating'
