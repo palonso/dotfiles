@@ -71,3 +71,7 @@ vim.keymap.set("n", "<leader>oo", function()
     vim.cmd("ObsidianOpen")
   end
 end, { silent = true, desc = "Open in Obsidian" })
+
+vim.api.nvim_create_user_command("Pick", function(opts)
+  LazyVim.pick("files", { cwd = vim.fn.expand(opts.args) })()
+end, { nargs = 1, complete = "dir" })

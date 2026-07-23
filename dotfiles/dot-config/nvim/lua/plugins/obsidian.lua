@@ -19,8 +19,12 @@ return {
     }, -- Use markdown-render instead.
     workspaces = {
       {
-        name = "Notes",
-        path = vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH"),
+        name = "Ableton",
+        path = vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH") .. "/Ableton",
+      },
+      {
+        name = "Personal",
+        path = vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH") .. "/Notes",
       },
     },
 
