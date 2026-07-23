@@ -2,185 +2,104 @@
 # Self-installing dotfiles bootstrap.
 #
 # Idempotent and cross-platform (macOS + any Linux, incl. dev containers).
-# Prefers user-space installs (no root) via mise; only falls back to a system
-# package manager for `stow` when it is missing.
+# User-space where possible (mise for tools); only `stow` may need root.
 #
 # Usage:
-#   ./install.sh                 # auto profile (adds `macos` on Darwin)
-#   PROFILE="common nvim" ./install.sh
-#   SKIP_NVIM=1 ./install.sh     # skip headless Neovim plugin/tool sync
+#   ./install.sh                       # auto profile (adds `macos` on a Mac)
+#   PROFILE="common nvim" ./install.sh # explicit profiles
+#   SKIP_NVIM=1 ./install.sh           # skip the headless Neovim sync
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OS="$(uname -s)"
 
-# Default profile: common + nvim everywhere, plus macos on a Mac.
 if [ -z "${PROFILE:-}" ]; then
   PROFILE="common nvim"
   [ "$OS" = "Darwin" ] && PROFILE="$PROFILE macos"
 fi
 
-log() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
+# Make mise's usual install locations visible for the rest of the script.
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+log()  { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
 
-# ---------------------------------------------------------------------------
-# 0. Preflight: heal XDG dirs left as symlinks by a previous stow run.
-# The old flat layout let stow tree-fold whole dirs (e.g. ~/.local) into a
-# single directory symlink; after moving the repo those dangle and break mise.
-# Replace any symlinked XDG dir with a real directory so tools can write there
-# and `stow --no-folding` can manage individual files.
-# ---------------------------------------------------------------------------
+# Heal dangling symlinks left by a previous stow (e.g. from an old repo path),
+# and make sure XDG dirs are real directories so mise and --no-folding stow can
+# share them.
 preflight() {
-  # Remove dangling top-level symlinks in $HOME left by an old dotfiles stow
-  # (e.g. ~/.zshrc, ~/.config, ~/.local pointing at a previous repo path).
-  local link target
   while IFS= read -r link; do
-    target="$(readlink "$link")"
-    case "$target" in
+    case "$(readlink "$link")" in
       *dotfiles*) log "removing dangling $link"; rm "$link" ;;
     esac
   done < <(find "$HOME" -maxdepth 1 -type l ! -exec test -e {} \; -print)
 
-  # Ensure XDG dirs exist as real directories so tools (mise) can write there
-  # and `stow --no-folding` can manage individual files inside them.
-  local d
-  for d in "$HOME/.config" "$HOME/.local" "$HOME/.local/bin" \
-           "$HOME/.local/share" "$HOME/.local/state"; do
-    if [ -L "$d" ]; then
-      log "replacing symlinked $d with a real directory"
-      rm "$d"
-    fi
-    mkdir -p "$d"
+  for d in .config .local .local/bin .local/share .local/state; do
+    [ -L "$HOME/$d" ] && rm "$HOME/$d"
+    mkdir -p "$HOME/$d"
   done
 }
 
-# ---------------------------------------------------------------------------
-# 1. mise (user-space tool manager) + tools from dot-config/mise/config.toml
-# ---------------------------------------------------------------------------
-MISE_BIN=""
-
-# Locate the mise binary wherever it landed (brew, the mise.run installer, or
-# an already-configured PATH). We do NOT assume ~/.local/bin exists.
-find_mise() {
-  if have mise; then command -v mise; return 0; fi
-  local c
-  for c in \
-    "$HOME/.local/bin/mise" \
-    /opt/homebrew/bin/mise \
-    /usr/local/bin/mise \
-    "${XDG_DATA_HOME:-$HOME/.local/share}/mise/bin/mise"; do
-    [ -x "$c" ] && { echo "$c"; return 0; }
-  done
-  return 1
-}
-
-install_mise() {
-  if have mise || find_mise >/dev/null; then
-    log "mise already installed"
-  else
-    log "installing mise"
-    if [ "$OS" = "Darwin" ] && have brew; then
-      brew install mise
-    else
-      # The mise.run installer defaults to ~/.local/bin and creates it.
-      curl -fsSL https://mise.run | sh
-    fi
-  fi
-
-  MISE_BIN="$(find_mise)" || {
-    echo "ERROR: mise installed but its binary could not be located." >&2
-    exit 1
-  }
-  export PATH="$(dirname "$MISE_BIN"):$PATH"
-  eval "$("$MISE_BIN" activate bash)" 2>/dev/null || true
-
-  log "installing tools from mise config"
-  # Point mise at the tracked manifest even before it is stowed.
-  MISE_CONFIG="$REPO_DIR/dotfiles/common/dot-config/mise/config.toml"
-  if [ -f "$MISE_CONFIG" ]; then
-    "$MISE_BIN" install --yes -C "$(dirname "$MISE_CONFIG")"
-  else
-    "$MISE_BIN" install --yes
-  fi
-}
-
-# ---------------------------------------------------------------------------
-# 2. zsh plugins (brew has them on macOS; clone on Linux/containers)
-# ---------------------------------------------------------------------------
-install_zsh_plugins() {
-  local dest="$HOME/.local/share/zsh"
-  mkdir -p "$dest"
-  clone_or_pull() {
-    local url="$1" dir="$2"
-    if [ -d "$dir/.git" ]; then
-      git -C "$dir" pull --ff-only --quiet || true
-    else
-      git clone --depth 1 --quiet "$url" "$dir"
-    fi
-  }
-  log "ensuring zsh plugins"
-  clone_or_pull https://github.com/zsh-users/zsh-autosuggestions \
-    "$dest/zsh-autosuggestions"
-  clone_or_pull https://github.com/zsh-users/zsh-syntax-highlighting \
-    "$dest/zsh-syntax-highlighting"
-}
-
-# ---------------------------------------------------------------------------
-# 3. stow (only tool we may need root for)
-# ---------------------------------------------------------------------------
+# Install stow (the one thing that may need a system package manager).
 ensure_stow() {
   have stow && return 0
   log "installing stow"
-  if have brew; then brew install stow
+  if   have brew;    then brew install stow
   elif have apt-get; then sudo apt-get update && sudo apt-get install -y stow
-  elif have dnf; then sudo dnf install -y stow
-  elif have apk; then sudo apk add stow
-  else
-    echo "ERROR: could not install stow automatically; install it manually." >&2
-    exit 1
+  elif have dnf;     then sudo dnf install -y stow
+  elif have apk;     then sudo apk add stow
+  else echo "ERROR: install stow manually." >&2; exit 1
   fi
 }
 
-# ---------------------------------------------------------------------------
-# 4. stow the selected profiles
-# ---------------------------------------------------------------------------
+# Symlink the selected profiles. --no-folding keeps ~/.config and ~/.local as
+# real dirs (only leaf files are linked) so other tools can write there too.
 stow_profiles() {
-  log "stowing profiles: $PROFILE"
-  cd "$REPO_DIR"
-  # --no-folding: keep ~/.config and ~/.local as real dirs and symlink only
-  # leaf files, so other tools (mise, etc.) can share those directories.
+  log "stowing: $PROFILE"
+  cd "$REPO_DIR"  # picks up .stowrc (--dir=dotfiles --target=~ --dotfiles)
   # shellcheck disable=SC2086
   stow --no-folding --restow $PROFILE
 }
 
-# ---------------------------------------------------------------------------
-# 5. headless Neovim: sync LazyVim plugins + Mason tools
-# ---------------------------------------------------------------------------
-bootstrap_nvim() {
-  [ -n "${SKIP_NVIM:-}" ] && { log "skipping nvim bootstrap"; return 0; }
-  # Prefer running nvim through mise so its managed version is used even if the
-  # shims dir isn't on PATH yet in this non-interactive shell.
-  local nvim_cmd=""
-  if [ -n "$MISE_BIN" ] && "$MISE_BIN" which nvim >/dev/null 2>&1; then
-    nvim_cmd="$MISE_BIN exec -- nvim"
-  elif have nvim; then
-    nvim_cmd="nvim"
-  else
-    log "nvim not available, skipping headless sync"
-    return 0
+# Install mise, then the tools from the now-stowed ~/.config/mise/config.toml.
+install_tools() {
+  if ! have mise; then
+    log "installing mise"
+    if [ "$OS" = "Darwin" ] && have brew; then
+      brew install mise
+    else
+      curl -fsSL https://mise.run | sh
+    fi
   fi
-  log "syncing Neovim plugins (headless)"
-  $nvim_cmd --headless "+Lazy! sync" +qa 2>/dev/null || true
+  log "installing tools (mise)"
+  mise install --yes
 }
 
-main() {
-  preflight
-  install_mise
-  install_zsh_plugins
-  ensure_stow
-  stow_profiles
-  bootstrap_nvim
-  log "done. Restart your shell (exec zsh) to pick up changes."
+# Clone zsh plugins (brew provides them on macOS; needed on Linux/containers).
+install_zsh_plugins() {
+  local dest="$HOME/.local/share/zsh" repo
+  for repo in zsh-users/zsh-autosuggestions zsh-users/zsh-syntax-highlighting; do
+    local dir="$dest/${repo#*/}"
+    if [ -d "$dir/.git" ]; then
+      git -C "$dir" pull --ff-only --quiet || true
+    else
+      log "cloning ${repo#*/}"
+      git clone --depth 1 --quiet "https://github.com/$repo" "$dir"
+    fi
+  done
 }
 
-main "$@"
+# Sync LazyVim plugins headlessly, using the mise-managed nvim.
+bootstrap_nvim() {
+  [ -n "${SKIP_NVIM:-}" ] && return 0
+  log "syncing Neovim plugins"
+  mise exec -- nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+}
+
+preflight
+ensure_stow
+stow_profiles
+install_tools
+install_zsh_plugins
+bootstrap_nvim
+log "done — restart your shell (exec zsh)."
