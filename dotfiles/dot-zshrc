@@ -8,6 +8,10 @@
 # % ============================ %
 eval "$(starship init zsh)"
 
+# Emacs shortcuts for command-line navigation
+# This inconsistency is annoying but vim keymaps are unusable in zsh
+bindkey -e
+
 # % ============================ %
 # Autosuggestions and highlighting
 # % ============================ %
@@ -19,7 +23,8 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # % ============================ %
 alias v=nvim
 alias l="ls -lth --color=always"
-alias c="claude"
+alias cc="claude"  # Claude Code I guess??
+alias c="clear"  # I use this one much more often
 
 alias cnotes="cd $OBSIDIAN_WORKSPACE_PATH"
 alias vnotes="cnotes && nvim"
@@ -33,5 +38,8 @@ alias creps="cd $HOME/reps/"
 # Environment variables
 # % ============================ %
 export EDITOR=nvim
-export OBSIDIAN_WORKSPACE_PATH="$HOME/syncthing/notes/Notes/"
 
+# % ============================ %
+# Load private config
+# % ============================ %
+[ -f "$HOME/.zshrc.secrets" ] && source "$HOME/.zshrc.secrets"
