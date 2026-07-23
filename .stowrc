@@ -1,5 +1,0 @@
---dir=dotfiles
---target=~/
---ignore=.stowrc
---ignore=.DS_Store
---dotfiles

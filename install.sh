@@ -40,25 +40,22 @@ preflight() {
   done
 }
 
-# Install stow (the one thing that may need a system package manager).
-ensure_stow() {
-  have stow && return 0
-  log "installing stow"
-  if   have brew;    then brew install stow
-  elif have apt-get; then sudo apt-get update && sudo apt-get install -y stow
-  elif have dnf;     then sudo dnf install -y stow
-  elif have apk;     then sudo apk add stow
-  else echo "ERROR: install stow manually." >&2; exit 1
-  fi
-}
-
-# Symlink the selected profiles. --no-folding keeps ~/.config and ~/.local as
-# real dirs (only leaf files are linked) so other tools can write there too.
-stow_profiles() {
-  log "stowing: $PROFILE"
-  cd "$REPO_DIR"  # picks up .stowrc (--dir=dotfiles --target=~ --dotfiles)
-  # shellcheck disable=SC2086
-  stow --no-folding --restow $PROFILE
+# Symlink each profile's files into $HOME, translating the `dot-` prefix to `.`
+# (e.g. common/dot-config/nvim/init.lua -> ~/.config/nvim/init.lua). Only leaf
+# files are linked, so ~/.config and ~/.local stay real dirs that other tools
+# (mise) can share. Any pre-existing real file is backed up to *.bak.
+link_profiles() {
+  local profile src rel target
+  for profile in $PROFILE; do
+    log "linking $profile"
+    while IFS= read -r src; do
+      rel=$(sed -e 's#^dot-#.#' -e 's#/dot-#/.#g' <<<"${src#"$REPO_DIR/dotfiles/$profile/"}")
+      target="$HOME/$rel"
+      mkdir -p "$(dirname "$target")"
+      [ -e "$target" ] && [ ! -L "$target" ] && mv "$target" "$target.bak"
+      ln -sfn "$src" "$target"
+    done < <(find "$REPO_DIR/dotfiles/$profile" -type f ! -name .DS_Store)
+  done
 }
 
 # Install mise, then the tools from the now-stowed ~/.config/mise/config.toml.
@@ -97,8 +94,7 @@ bootstrap_nvim() {
 }
 
 preflight
-ensure_stow
-stow_profiles
+link_profiles
 install_tools
 install_zsh_plugins
 bootstrap_nvim

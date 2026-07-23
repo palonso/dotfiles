@@ -1,25 +1,9 @@
 # My dotfiles
 
-## Requirements
-
-Install [stow](https://www.gnu.org/software/stow/).
-
-Mac:
-
-```bash
-brew install stow
-```
-
-Linux:
-
-```bash
-sudo apt install stow
-```
-
 ## Layout
 
-Configs are split into stow packages (profiles) so a machine can take only
-what it needs:
+Configs are split into profiles so a machine can take only what it needs
+(directory names use a `dot-` prefix that maps to `.` in `$HOME`):
 
 - `common` — shell (zsh), tmux, starship, mise, `~/.local/bin` scripts
 - `nvim` — Neovim / LazyVim config
@@ -27,23 +11,18 @@ what it needs:
 
 ## Installation
 
-One command bootstraps everything (installs [mise](https://mise.jdx.dev) and
-user-space tools, zsh plugins, `stow`, symlinks the configs, and syncs Neovim
-plugins). Works on macOS and any Linux, including inside dev containers:
+One command bootstraps everything: installs [mise](https://mise.jdx.dev) and
+the user-space tools, symlinks the selected profiles into `$HOME`, clones the
+zsh plugins, and syncs Neovim plugins. The only prerequisites are `git`,
+`curl`, and `bash`. Works on macOS and any Linux, including dev containers:
 
 ```bash
 git clone git@github.com:palonso/dotfiles.git
 cd dotfiles
-./install.sh                    # auto: common + nvim (+ macos on a Mac)
+./install.sh                         # auto: common + nvim (+ macos on a Mac)
 PROFILE="common nvim" ./install.sh   # explicit profile selection
-SKIP_NVIM=1 ./install.sh        # skip the headless Neovim sync
+SKIP_NVIM=1 ./install.sh             # skip the headless Neovim sync
 ```
 
-### Manual (stow only)
-
-If the tools are already present you can just symlink the configs:
-
-```bash
-stow common nvim         # server / dev container (no GUI)
-stow common nvim macos   # full macOS setup
-```
+Re-running is safe: existing symlinks are refreshed and any real file in the
+way is backed up to `*.bak`.
