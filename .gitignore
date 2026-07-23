@@ -3,3 +3,17 @@ automatic_backups/
 
 # ignore tmux plugins
 tmux/plugins/
+
+# runtime state / caches under ~/.local (never track)
+**/dot-local/share/
+**/dot-local/state/
+
+# machine-specific absolute-path symlinks in ~/.local/bin
+**/dot-local/bin/claude
+**/dot-local/bin/claude-science
+**/dot-local/bin/codex
+**/dot-local/bin/dvc
+
+# tool auth / secrets
+**/dot-config/gh/
+**/dot-config/github-copilot/
