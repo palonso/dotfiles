@@ -1,12 +1,22 @@
 # % ============================ %
-# Fzf configuration
+# PATH: mise-managed user-space tools (fzf, lazygit, starship, nvim, ...)
 # % ============================ %
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="$HOME/.local/bin:$PATH"
+command -v mise >/dev/null && eval "$(mise activate zsh)"
+
+# % ============================ %
+# Fzf configuration (mise-provided fzf, fall back to legacy ~/.fzf.zsh)
+# % ============================ %
+if command -v fzf >/dev/null; then
+  source <(fzf --zsh)
+elif [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+fi
 
 # % ============================ %
 # Prompt configuration
 # % ============================ %
-eval "$(starship init zsh)"
+command -v starship >/dev/null && eval "$(starship init zsh)"
 
 # Emacs shortcuts for command-line navigation
 # This inconsistency is annoying but vim keymaps are unusable in zsh
@@ -14,9 +24,16 @@ bindkey -e
 
 # % ============================ %
 # Autosuggestions and highlighting
+# Prefer brew paths on macOS; fall back to install.sh's git clones under
+# ~/.local/share/zsh (used inside containers / Linux without brew).
 # % ============================ %
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+for _zsh_prefix in "$(command -v brew >/dev/null && brew --prefix)/share" "$HOME/.local/share/zsh"; do
+  [ -f "$_zsh_prefix/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
+    source "$_zsh_prefix/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  [ -f "$_zsh_prefix/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
+    source "$_zsh_prefix/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+done
+unset _zsh_prefix
 
 # % ============================ %
 # Aliases
