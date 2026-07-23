@@ -1,0 +1,12 @@
+# Cross-platform CLI tools, installed user-space by `mise install`.
+# Works identically on macOS and any Linux (incl. inside dev containers),
+# no root required. Python lint/format tools are handled by Neovim's Mason,
+# not here.
+[tools]
+neovim = "latest"
+fzf = "latest"
+lazygit = "latest"
+ripgrep = "latest"
+fd = "latest"
+node = "lts"        # LazyVim LSPs, treesitter, copilot
+starship = "latest"
