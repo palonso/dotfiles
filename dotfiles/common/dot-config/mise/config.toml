@@ -8,5 +8,6 @@ fzf = "latest"
 lazygit = "latest"
 ripgrep = "latest"
 fd = "latest"
-node = "lts"        # LazyVim LSPs, treesitter, copilot
+node = "lts"                                     # LazyVim LSPs, treesitter, copilot
 starship = "latest"
+"npm:@earendil-works/pi-coding-agent" = "latest" # pi coding agent
