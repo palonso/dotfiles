@@ -1,0 +1,11 @@
+# ~/.bashrc — interactive bash shells.
+#
+# Ensure the shims PATH is present even when this file is sourced directly
+# (e.g. a non-login interactive shell that skips ~/.profile).
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
+# Interactive convenience: `mise activate` hooks the prompt so tool versions
+# switch per-directory. Shims already cover non-interactive use.
+command -v mise >/dev/null && eval "$(mise activate bash)"
+
+command -v starship >/dev/null && eval "$(starship init bash)"

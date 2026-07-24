@@ -1,0 +1,6 @@
+# ~/.bash_profile — read by login bash shells.
+#
+# Pull in the shims PATH (see ~/.profile), then fall through to ~/.bashrc so
+# interactive `mise activate` and other interactive settings still load.
+[ -f ~/.profile ] && . ~/.profile
+[ -f ~/.bashrc ]  && . ~/.bashrc

@@ -1,0 +1,5 @@
+# ~/.zshenv — sourced by *every* zsh invocation, including non-interactive
+# ones (docker exec, tmux, scripts, pi's command execution). Putting the mise
+# shims dir here means tools resolve without relying on `mise activate`, which
+# only runs for interactive prompts (~/.zshrc).
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"

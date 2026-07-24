@@ -1,7 +1,10 @@
 # % ============================ %
 # PATH: mise-managed user-space tools (fzf, lazygit, starship, nvim, ...)
+# The shims dir is a plain folder of executables, so tools resolve even in
+# non-interactive shells; `mise activate` adds per-directory version switching
+# for this interactive session.
 # % ============================ %
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 command -v mise >/dev/null && eval "$(mise activate zsh)"
 
 # % ============================ %

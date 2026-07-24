@@ -1,0 +1,7 @@
+# ~/.profile — read by POSIX/login shells (sh, and bash when no .bash_profile).
+#
+# mise's shims dir is the robust way to expose mise-managed tools: it's just a
+# folder of executables on PATH, so it works everywhere — docker exec, tmux,
+# scripts, and non-interactive command execution — unlike `mise activate`,
+# which only hooks interactive shell prompts.
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
