@@ -24,6 +24,30 @@ export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 log()  { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# Run a command as root when we aren't already (containers often lack sudo).
+as_root() {
+  if [ "$(id -u)" = 0 ]; then "$@"; elif have sudo; then sudo "$@";
+  else log "need root to run: $*"; return 1; fi
+}
+
+# Ensure a working downloader exists; install curl via the OS package manager
+# on minimal images (dev containers) that ship without it.
+ensure_downloader() {
+  if have curl || have wget; then return 0; fi
+  log "no curl/wget found - installing curl"
+  if   have apt-get; then as_root apt-get update -qq && as_root apt-get install -y -qq curl ca-certificates
+  elif have apk;     then as_root apk add --no-cache curl ca-certificates
+  elif have dnf;     then as_root dnf install -y -q curl ca-certificates
+  elif have yum;     then as_root yum install -y -q curl ca-certificates
+  elif have pacman;  then as_root pacman -Sy --noconfirm curl ca-certificates
+  else log "cannot auto-install curl; please install curl or wget"; return 1; fi
+}
+
+# Fetch a URL to stdout using whichever downloader is available.
+fetch() {
+  if have curl; then curl -fsSL "$1"; else wget -qO- "$1"; fi
+}
+
 # Heal dangling symlinks left by a previous stow (e.g. from an old repo path),
 # and make sure XDG dirs are real directories so mise and --no-folding stow can
 # share them.
@@ -65,7 +89,8 @@ install_tools() {
     if [ "$OS" = "Darwin" ] && have brew; then
       brew install mise
     else
-      curl -fsSL https://mise.run | sh
+      ensure_downloader
+      fetch https://mise.run | sh
     fi
   fi
   log "installing tools (mise)"
