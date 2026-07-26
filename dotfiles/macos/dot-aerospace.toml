@@ -208,6 +208,7 @@ automatically-unhide-macos-hidden-apps = false
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
 
+# term and browser are tiled, everything else is floating by default
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
 run = ['layout tiling', 'layout h_tiles']
