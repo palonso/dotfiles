@@ -39,25 +39,12 @@ done
 unset _zsh_prefix
 
 # % ============================ %
-# Aliases
+# Portable aliases and env
 # % ============================ %
-alias v=nvim
-alias l="ls -lth --color=always"
-alias cc="claude"  # Claude Code I guess??
-alias c="clear"  # I use this one much more often
+[ -f "$HOME/.shrc" ] && source "$HOME/.shrc"
 
-alias cnotes="cd $OBSIDIAN_WORKSPACE_PATH"
-alias vnotes="cnotes && nvim"
-
-alias cdot="cd $HOME/reps/dotfiles/"
-alias vdot="cdot && nvim"
-
-alias creps="cd $HOME/reps/"
-
-# % ============================ %
-# Environment variables
-# % ============================ %
-export EDITOR=nvim
+# `l` uses BSD ls flags (-G); macOS runs zsh (see bashrc for the GNU variant)
+alias l="ls -lthG"
 
 # % ============================ %
 # Load private config

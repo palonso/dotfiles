@@ -1,0 +1,21 @@
+# interactive shell config shared by zsh and bash.
+
+# % ============================ %
+# Aliases
+# % ============================ %
+alias v=nvim
+alias cc="claude"  # Claude Code I guess??
+alias c="clear"  # I use this one much more often
+
+alias cnotes="cd $OBSIDIAN_WORKSPACE_PATH"
+alias vnotes="cnotes && nvim"
+
+alias cdot="cd $HOME/reps/dotfiles/"
+alias vdot="cdot && nvim"
+
+alias creps="cd $HOME/reps/"
+
+# % ============================ %
+# Environment variables
+# % ============================ %
+export EDITOR=nvim

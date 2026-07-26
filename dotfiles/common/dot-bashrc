@@ -9,3 +9,9 @@ export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 command -v mise >/dev/null && eval "$(mise activate bash)"
 
 command -v starship >/dev/null && eval "$(starship init bash)"
+
+# Portable aliases and env
+[ -f "$HOME/.shrc" ] && source "$HOME/.shrc"
+
+# `l` uses GNU ls flags (--color); bash runs on Linux (see zshrc for the BSD variant)
+alias l="ls -lth --color=always"
