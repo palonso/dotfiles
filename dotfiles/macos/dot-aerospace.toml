@@ -96,13 +96,13 @@ automatically-unhide-macos-hidden-apps = false
     alt-comma = 'layout accordion horizontal vertical'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-    cmd-shift-h = 'focus left'
-    cmd-shift-j = 'focus down'
-    cmd-shift-k = 'focus up'
-    cmd-shift-l = 'focus right'
+    alt-h = 'focus left'
+    alt-j = 'focus down'
+    alt-k = 'focus up'
+    alt-l = 'focus right'
 
     # Toggle window between floating and tiling ('f' for float)
-    cmd-shift-f = 'layout floating tiling'
+    alt-f = 'layout floating tiling'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move
     alt-shift-h = 'move left'
@@ -148,15 +148,15 @@ automatically-unhide-macos-hidden-apps = false
     # cmd-z = 'workspace Z'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-    cmd-f1 = 'move-node-to-workspace 1'
-    cmd-f2 = 'move-node-to-workspace 2'
-    cmd-f3 = 'move-node-to-workspace 3'
-    cmd-f4 = 'move-node-to-workspace 4'
-    cmd-f5 = 'move-node-to-workspace 5'
-    cmd-f6 = 'move-node-to-workspace 6'
-    cmd-f7 = 'move-node-to-workspace 7'
-    cmd-f8 = 'move-node-to-workspace 8'
-    cmd-f9 = 'move-node-to-workspace 9'
+    alt-1 = 'move-node-to-workspace 1'
+    alt-2 = 'move-node-to-workspace 2'
+    alt-3 = 'move-node-to-workspace 3'
+    alt-4 = 'move-node-to-workspace 4'
+    alt-5 = 'move-node-to-workspace 5'
+    alt-6 = 'move-node-to-workspace 6'
+    alt-7 = 'move-node-to-workspace 7'
+    alt-8 = 'move-node-to-workspace 8'
+    alt-9 = 'move-node-to-workspace 9'
     # cmd-shift-a = 'move-node-to-workspace A'
     # cmd-shift-b = 'move-node-to-workspace B'
     # cmd-shift-c = 'move-node-to-workspace C'
