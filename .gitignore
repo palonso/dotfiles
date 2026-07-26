@@ -20,3 +20,8 @@ lazy-lock.json
 # tool auth / secrets
 **/dot-config/gh/
 **/dot-config/github-copilot/
+
+# private env vars
+.secrets
+dot-secrets
+*.secrets

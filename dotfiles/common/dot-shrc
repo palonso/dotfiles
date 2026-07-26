@@ -19,3 +19,8 @@ alias creps="cd $HOME/reps/"
 # Environment variables
 # % ============================ %
 export EDITOR=nvim
+
+# % ============================ %
+# Untracked private env vars (API keys, tokens)
+# % ============================ %
+[ -f "$HOME/.secrets" ] && . "$HOME/.secrets"

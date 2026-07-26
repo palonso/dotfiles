@@ -45,8 +45,3 @@ unset _zsh_prefix
 
 # `l` uses BSD ls flags (-G); macOS runs zsh (see bashrc for the GNU variant)
 alias l="ls -lthG"
-
-# % ============================ %
-# Load private config
-# % ============================ %
-[ -f "$HOME/.zshrc.secrets" ] && source "$HOME/.zshrc.secrets"
