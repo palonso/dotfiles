@@ -111,6 +111,23 @@ install_zsh_plugins() {
   done
 }
 
+# Clone TPM (tmux plugin manager) and install the plugins listed in tmux.conf
+# (catppuccin, tmux-sensible, etc.). TPM itself is a git repo, and it clones the
+# other plugins into ~/.config/tmux/plugins/, so this stays in git-clone land
+# rather than mise (which manages binaries, not tmux plugins).
+install_tmux_plugins() {
+  have tmux || { log "tmux not found - skipping tmux plugins"; return 0; }
+  local tpm="$HOME/.config/tmux/plugins/tpm"
+  if [ -d "$tpm/.git" ]; then
+    git -C "$tpm" pull --ff-only --quiet || true
+  else
+    log "cloning tpm"
+    git clone --depth 1 --quiet https://github.com/tmux-plugins/tpm "$tpm"
+  fi
+  log "installing tmux plugins (tpm)"
+  "$tpm/bin/install_plugins" >/dev/null || true
+}
+
 # Sync LazyVim plugins headlessly, using the mise-managed nvim.
 bootstrap_nvim() {
   [ -n "${SKIP_NVIM:-}" ] && return 0
@@ -122,5 +139,6 @@ preflight
 link_profiles
 install_tools
 install_zsh_plugins
+install_tmux_plugins
 bootstrap_nvim
 log "done — restart your shell (exec zsh)."
