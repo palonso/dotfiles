@@ -4,6 +4,9 @@ automatic_backups/
 # ignore tmux plugins
 tmux/plugins/
 
+# ignore lazy-lock
+lazy-lock.json
+
 # runtime state / caches under ~/.local (never track)
 **/dot-local/share/
 **/dot-local/state/
