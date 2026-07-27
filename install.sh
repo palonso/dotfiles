@@ -95,6 +95,11 @@ install_tools() {
   fi
   log "installing tools (mise)"
   mise install --yes
+  # Regenerate shims so the ~/.local/share/mise/shims dir (on PATH via
+  # ~/.profile, ~/.zshenv, etc.) exposes every freshly installed tool. This is
+  # what makes tools resolve in non-interactive shells where `mise activate`
+  # never runs (docker exec, tmux, scripts, pi's command execution).
+  mise reshim
 }
 
 # Clone zsh plugins (brew provides them on macOS; needed on Linux/containers).
