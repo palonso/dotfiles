@@ -23,7 +23,7 @@ command -v entr >/dev/null || {
 }
 
 # Exclude patterns
-EXCLUDES="*.pyc __pycache__ .git .DS_Store *.log .mypy_cache .pytest_cache .idea .vscode *.swp venv build"
+EXCLUDES="*.pyc __pycache__ .git .DS_Store *.log .mypy_cache .pytest_cache .idea .vscode *.swp venv .venv build .ruff_cache/"
 
 # Build rsync exclude string and find exclude args
 RSYNC_EXCLUDES=""
