@@ -5,7 +5,7 @@ return {
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = false,
   enabled = function()
-    return vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH") ~= vim.NIL
+    return vim.env.OBSIDIAN_WORKSPACE_PATH ~= nil
   end,
   ft = "markdown",
   opts = {
@@ -20,11 +20,11 @@ return {
     workspaces = {
       {
         name = "Ableton",
-        path = vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH") .. "/Ableton",
+        path = vim.env.OBSIDIAN_WORKSPACE_PATH .. "/Ableton",
       },
       {
         name = "Personal",
-        path = vim.fn.getenv("OBSIDIAN_WORKSPACE_PATH") .. "/Notes",
+        path = vim.env.OBSIDIAN_WORKSPACE_PATH .. "/Notes",
       },
     },
 
