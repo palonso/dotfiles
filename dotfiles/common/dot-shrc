@@ -11,13 +11,16 @@
 alias v=nvim
 alias c="clear"  # I use this one much more often
 
+[ -z "$OBSIDIAN_WORKSPACE_PATH" ] && export OBSIDIAN_WORKSPACE_PATH="$HOME/obs_vaults/"
 alias cnotes="cd $OBSIDIAN_WORKSPACE_PATH"
 alias vnotes="cnotes && nvim"
 
-alias cdot="cd $HOME/reps/personal/dotfiles/"
-alias vdot="cdot && nvim"
+[ -z "$REPS_PATH" ] && export REPS_PATH="$HOME/reps/"
+alias creps="cd $REPS_PATH"
 
-alias creps="cd $HOME/reps/"
+[ -z "$DOTFILES_PATH" ] && export DOTFILES_PATH="$REPS_PATH/dotfiles/"
+alias cdot="cd $DOTFILES_PATH"
+alias vdot="cdot && nvim"
 
 # % ============================ %
 # Environment variables
