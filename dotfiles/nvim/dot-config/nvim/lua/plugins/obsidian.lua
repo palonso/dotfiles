@@ -19,17 +19,13 @@ return {
     }, -- Use markdown-render instead.
     workspaces = {
       {
-        name = "Ableton",
-        path = vim.env.OBSIDIAN_WORKSPACE_PATH .. "/Ableton",
-      },
-      {
-        name = "Personal",
-        path = vim.env.OBSIDIAN_WORKSPACE_PATH .. "/Notes",
+        name = "notes",
+        path = vim.env.OBSIDIAN_WORKSPACE_PATH,
       },
     },
 
     -- Optional, if you keep notes in a specific subdirectory of your vault.
-    notes_subdir = "0_inbox",
+    notes_subdir = "inbox",
     new_notes_location = "notes_subdir",
 
     -- Daily notes configuration.
