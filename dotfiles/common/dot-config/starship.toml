@@ -2,7 +2,10 @@
 
 add_newline = false
 
+palette = "gruvbox_dark"
+
 [aws]
+style = "bold orange"
 symbol = " "
 
 [buf]
@@ -12,15 +15,18 @@ symbol = " "
 symbol = " "
 
 [c]
+style = "bold blue"
 symbol = " "
 
 [cpp]
+style = "bold blue"
 symbol = " "
 
 [cmake]
 symbol = " "
 
 [conda]
+style = "bold green"
 symbol = " "
 
 [crystal]
@@ -33,9 +39,12 @@ symbol = " "
 symbol = " "
 
 [directory]
+style = "bold blue"
+read_only_style = "bold red"
 read_only = " 󰌾"
 
 [docker_context]
+style = "bold blue"
 symbol = " "
 
 [elixir]
@@ -54,15 +63,19 @@ symbol = " "
 symbol = " "
 
 [gcloud]
+style = "bold orange"
 symbol = " "
 
 [git_branch]
+style = "bold purple"
 symbol = " "
 
 [git_commit]
+style = "bold green"
 tag_symbol = '  '
 
 [golang]
+style = "bold aqua"
 symbol = " "
 
 [gradle]
@@ -72,6 +85,7 @@ symbol = " "
 symbol = " "
 
 [haskell]
+style = "bold purple"
 symbol = " "
 
 [haxe]
@@ -81,21 +95,26 @@ symbol = " "
 symbol = " "
 
 [hostname]
+style = "bold aqua"
 ssh_symbol = " "
 
 [java]
+style = "bold red"
 symbol = " "
 
 [julia]
 symbol = " "
 
 [kotlin]
+style = "bold red"
 symbol = " "
 
 [lua]
+style = "bold blue"
 symbol = " "
 
 [memory_usage]
+style = "bold purple"
 symbol = "󰍛 "
 
 [meson]
@@ -105,9 +124,11 @@ symbol = "󰔷 "
 symbol = "󰆥 "
 
 [nix_shell]
+style = "bold blue"
 symbol = " "
 
 [nodejs]
+style = "bold green"
 symbol = " "
 
 [ocaml]
@@ -165,6 +186,7 @@ Windows = "󰍲 "
 Zorin = " "
 
 [package]
+style = "bold yellow"
 symbol = "󰏗 "
 
 [perl]
@@ -177,24 +199,30 @@ symbol = " "
 symbol = " "
 
 [pixi]
+style = "bold aqua"
 symbol = "󰏗 "
 
 [python]
+style = "bold yellow"
 symbol = " "
 
 [rlang]
 symbol = "󰟔 "
 
 [ruby]
+style = "bold red"
 symbol = " "
 
 [rust]
+style = "bold orange"
 symbol = "󱘗 "
 
 [scala]
+style = "bold red"
 symbol = " "
 
 [status]
+style = "bold red"
 symbol = " "
 
 [swift]
@@ -204,4 +232,45 @@ symbol = " "
 symbol = " "
 
 [zig]
+style = "bold yellow"
 symbol = " "
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vicmd_symbol = "[❮](bold yellow)"
+
+[git_status]
+style = "bold red"
+
+[git_state]
+style = "bold orange"
+
+[cmd_duration]
+style = "bold yellow"
+
+[time]
+style = "bold gray"
+
+[username]
+style_user = "bold yellow"
+style_root = "bold red"
+
+# These shadow starship's built-in colour names, so "bold blue" above resolves
+# to gruvbox blue rather than the terminal's ANSI blue.
+[palettes.gruvbox_dark]
+bg0 = "#282828"
+bg1 = "#3c3836"
+bg2 = "#504945"
+bg3 = "#665c54"
+fg0 = "#fbf1c7"
+fg1 = "#ebdbb2"
+fg4 = "#a89984"
+gray = "#928374"
+red = "#fb4934"
+green = "#b8bb26"
+yellow = "#fabd2f"
+blue = "#83a598"
+purple = "#d3869b"
+aqua = "#8ec07c"
+orange = "#fe8019"
