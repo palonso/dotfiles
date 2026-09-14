@@ -4,7 +4,7 @@
 theme = Gruvbox Material Dark
 
 # Background transparency (0.0 = fully transparent, 1.0 = opaque)
-background-opacity = 0.98
+background-opacity = 0.96
 
 # Optional: nicer spacing
 window-padding-x = 12
